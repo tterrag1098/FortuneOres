@@ -57,7 +57,7 @@ public class FortuneOres {
     {
         // Take over vanilla iron
 	    Block.blocksList[Block.oreIron.blockID] = null;
-	    oreIron = new Block_IronOre(config.blockIronOreID, Material.rock);
+	    oreIron = new Block_IronOre(Block.oreIron.blockID, Material.rock);
 	    GameRegistry.registerBlock(oreIron, "oreIron");
 	    MinecraftForge.setBlockHarvestLevel(oreIron, "pickaxe", 1);
 	    Block.blocksList[Block.oreIron.blockID] = oreIron;
@@ -72,7 +72,7 @@ public class FortuneOres {
         
         // Take over vanilla gold
 	    Block.blocksList[Block.oreGold.blockID] = null;
-	    oreGold = new Block_GoldOre(config.blockGoldOreID, Material.rock);
+	    oreGold = new Block_GoldOre(Block.oreGold.blockID, Material.rock);
 	    GameRegistry.registerBlock(oreGold, "oreGold");
 	    MinecraftForge.setBlockHarvestLevel(oreGold, "pickaxe", 2);
 	    Block.blocksList[Block.oreGold.blockID] = oreGold;
