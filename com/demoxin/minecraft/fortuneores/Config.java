@@ -19,7 +19,7 @@ public class Config
         blockIronOreID = config.get("blocks", "blockIronOreID", defaultBlockID).getInt(defaultBlockID);
         blockGoldOreID = config.get("blocks", "blockGoldOreID", defaultBlockID + 1).getInt(defaultBlockID + 1);
         itemIronChunkID = config.get("items", "itemIronChunkID", defaultItemID).getInt(defaultItemID);
-        itemGoldChunkID = config.get("items", "itemGoldChunkID", defaultItemID + 1).getInt(defaultItemID + 1);;
+        itemGoldChunkID = config.get("items", "itemGoldChunkID", defaultItemID + 1).getInt(defaultItemID + 1);
        
         if( config.hasChanged() )
         {

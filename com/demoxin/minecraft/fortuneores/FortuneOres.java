@@ -34,9 +34,6 @@ public class FortuneOres {
 	// Config
 	public static Config config;
 	
-	// Config
-	protected int[] configID;
-	
 	// Blocks
 	public static Block oreIron;
 	public static Block oreGold;
@@ -64,6 +61,7 @@ public class FortuneOres {
 	    GameRegistry.registerBlock(oreIron, "oreIron");
 	    MinecraftForge.setBlockHarvestLevel(oreIron, "pickaxe", 1);
 	    Block.blocksList[Block.oreIron.blockID] = oreIron;
+	    OreDictionary.registerOre("oreIron", new ItemStack(oreIron));
         
         // Add Iron Chunks
         chunkIron = new Item_IronChunk(config.itemIronChunkID);
@@ -78,6 +76,7 @@ public class FortuneOres {
 	    GameRegistry.registerBlock(oreGold, "oreGold");
 	    MinecraftForge.setBlockHarvestLevel(oreGold, "pickaxe", 2);
 	    Block.blocksList[Block.oreGold.blockID] = oreGold;
+	    OreDictionary.registerOre("oreGold", new ItemStack(oreGold));
         
         // Add gold chunks
         chunkGold = new Item_GoldChunk(config.itemGoldChunkID);
