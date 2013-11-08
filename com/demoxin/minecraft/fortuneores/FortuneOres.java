@@ -1,5 +1,9 @@
 package com.demoxin.minecraft.fortuneores;
 
+import ic2.api.info.Info;
+import ic2.api.item.Items;
+import ic2.api.recipe.RecipeInputItemStack;
+import ic2.api.recipe.Recipes;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -7,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -16,7 +21,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-
 
 @Mod(modid = FortuneOres.MODID, name = FortuneOres.NAME, version = FortuneOres.VERSION)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
@@ -50,7 +54,21 @@ public class FortuneOres {
     }
     
     @EventHandler
-    public void postInit(FMLPostInitializationEvent fEvent) {}
+    public void postInit(FMLPostInitializationEvent fEvent)
+    {
+    	// Add some mod compatibility recipes if they're loaded.
+    	// IndustrialCraft
+    	if(Loader.isModLoaded("IC2"))
+    	{
+    		ItemStack IronDust = Items.getItem("ironDust").copy();
+    		IronDust.stackSize = 2;
+    		Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(chunkIron)), null, IronDust);
+    		
+    		ItemStack GoldDust = Items.getItem("goldDust").copy();
+    		GoldDust.stackSize = 2;
+    		Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(chunkGold)), null, GoldDust);
+    	}
+    }
     
     @EventHandler
     public void load(FMLInitializationEvent fEvent)
