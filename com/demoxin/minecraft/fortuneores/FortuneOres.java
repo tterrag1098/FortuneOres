@@ -1,9 +1,9 @@
 package com.demoxin.minecraft.fortuneores;
 
-import ic2.api.info.Info;
 import ic2.api.item.Items;
 import ic2.api.recipe.RecipeInputItemStack;
 import ic2.api.recipe.Recipes;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -28,7 +27,7 @@ public class FortuneOres {
 	// Mod Info
 	public static final String MODID = "FortuneOres";
 	public static final String NAME = "FortuneOres";
-	public static final String VERSION = "0.1";
+	public static final String VERSION = "0.2";
 	// Mod Info End
 	
 	// Singleton
@@ -57,16 +56,12 @@ public class FortuneOres {
     public void postInit(FMLPostInitializationEvent fEvent)
     {
     	// Add some mod compatibility recipes if they're loaded.
+    	
     	// IndustrialCraft
-    	if(Loader.isModLoaded("IC2"))
+    	if(false)
+    	//if(config.IC2Recipes)
     	{
-    		ItemStack IronDust = Items.getItem("ironDust").copy();
-    		IronDust.stackSize = 2;
-    		Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(chunkIron)), null, IronDust);
-    		
-    		ItemStack GoldDust = Items.getItem("goldDust").copy();
-    		GoldDust.stackSize = 2;
-    		Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(chunkGold)), null, GoldDust);
+    		Compat_IC2();
     	}
     }
     
@@ -109,5 +104,17 @@ public class FortuneOres {
         // Smelting
         GameRegistry.addSmelting(chunkIron.itemID, stackIron, 0.2f);
         GameRegistry.addSmelting(chunkGold.itemID, stackGold, 0.2f);
+    }
+    
+    // Compatibility Functions
+    public void Compat_IC2()
+    {
+    	ItemStack IronDust = Items.getItem("ironDust").copy();
+		IronDust.stackSize = 2;
+		Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(chunkIron)), null, IronDust);
+		
+		ItemStack GoldDust = Items.getItem("goldDust").copy();
+		GoldDust.stackSize = 2;
+		Recipes.macerator.addRecipe(new RecipeInputItemStack(new ItemStack(chunkGold)), null, GoldDust);
     }
 }
