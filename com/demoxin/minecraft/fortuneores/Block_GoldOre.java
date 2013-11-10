@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
 
 public class Block_GoldOre extends Block
 {
@@ -43,5 +44,16 @@ public class Block_GoldOre extends Block
     protected boolean canSilkHarvest()
     {
         return true;
+    }
+    
+    public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
+    {
+    	super.dropBlockAsItemWithChance(par1World, par2, par3, par4, par5, par6, par7);
+    	
+    	if(this.idDropped(par5, par1World.rand, par7) != this.blockID)
+    	{
+    		int xp = MathHelper.getRandomIntegerInRange(par1World.rand, 2, 5);
+    		this.dropXpOnBlockBreak(par1World, par2, par3, par4, xp);
+    	}
     }
 }
