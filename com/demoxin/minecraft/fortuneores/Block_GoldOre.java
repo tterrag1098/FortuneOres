@@ -31,13 +31,13 @@ public class Block_GoldOre extends Block
     @Override
     public int quantityDroppedWithBonus(int par1, Random par2Random)
     {
-        return MathHelper.clamp_int(this.quantityDropped(par2Random) + par2Random.nextInt(par1 + 1), 1, 3);
+        return MathHelper.clamp_int(this.quantityDropped(par2Random) + par2Random.nextInt(par1 + 1), 1, 10);
     }
     
     @Override
     public int quantityDropped(Random par1Random)
     {
-        return 1;
+        return FortuneOres.config.countGoldChunks;
     }
     
     @Override
