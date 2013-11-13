@@ -3,18 +3,17 @@ package com.demoxin.minecraft.fortuneores;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
-public class Item_GoldChunk extends Item
+public class Item_Chunk extends Item
 {
-	public Item_GoldChunk(int fID)
+	public Item_Chunk(int fID, String fName, String fTexture)
     {
         super(fID);
         
         setMaxStackSize(64);
         setCreativeTab(CreativeTabs.tabMaterials);
-        setUnlocalizedName("chunkGold");
+        setUnlocalizedName(fName);
         
         // Texture
-        this.setTextureName(FortuneOres.NAME + ":goldchunk");
+        this.setTextureName(FortuneOres.NAME + ":" + fTexture);
     }
 }
-
