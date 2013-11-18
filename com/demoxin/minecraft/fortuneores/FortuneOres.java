@@ -1,6 +1,7 @@
 package com.demoxin.minecraft.fortuneores;
 
-import net.minecraft.block.Block;
+import java.util.ArrayList;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
@@ -25,7 +26,7 @@ public class FortuneOres {
 	// Mod Info
 	public static final String MODID = "FortuneOres";
 	public static final String NAME = "FortuneOres";
-	public static final String VERSION = "0.5";
+	public static final String VERSION = "1.0";
 	// Mod Info End
 	
 	// Singleton
@@ -34,15 +35,6 @@ public class FortuneOres {
 	
 	// Config
 	public static Config config;
-	
-	// Blocks
-	public static Block blockIron;
-	public static Block blockGold;
-	// Mod Ores
-	public static Block blockCopper;
-	public static Block blockTin;
-	public static Block blockLead;
-	public static Block blockSilver;
 	
 	// Items
 	public static Item itemIron;
@@ -63,64 +55,27 @@ public class FortuneOres {
     }
     
     @EventHandler
+    public void load(FMLInitializationEvent fEvent)
+    {
+    	AddItems();
+    }
+    
+    @EventHandler
     public void postInit(FMLPostInitializationEvent fEvent)
     {
-    	// Hostile Takeover of blocks!
-    	if(config.enableIron)
-    	{
-    		ReplaceOre(Block.oreIron.blockID, blockIron);
-    	}
-    	
-    	if(config.enableGold)
-    	{
-    		ReplaceOre(Block.oreGold.blockID, blockGold);
-    	}
-    	
-    	if(config.enableCopper)
-    	{
-    		for(int i = 0; i < Config.replaceCopper.length; ++i)
-    		{
-    			ReplaceOre(Config.replaceCopper[i], blockCopper);
-    		}
-    	}
-    	
-    	if(config.enableTin)
-    	{
-    		for(int i = 0; i < Config.replaceTin.length; ++i)
-    		{
-    			ReplaceOre(Config.replaceTin[i], blockTin);
-    		}
-    	}
-    	
-    	if(config.enableLead)
-    	{
-    		for(int i = 0; i < Config.replaceLead.length; ++i)
-    		{
-    			ReplaceOre(Config.replaceLead[i], blockLead);
-    		}
-    	}
-    	
-    	if(config.enableSilver)
-    	{
-    		for(int i = 0; i < Config.replaceSilver.length; ++i)
-    		{
-    			ReplaceOre(Config.replaceSilver[i], blockSilver);
-    		}
-    	}
-    	
+    	AddSmelting();
+    	MinecraftForge.EVENT_BUS.register(new OreSwapper());
     	// Add some mod compatibility recipes if they're loaded.
     	
-    	// IndustrialCraft
+    	// IndustrialCraft2
     	if(Loader.isModLoaded("IC2"))
     	{
     		Compat_IC2 = new IC2();
     	}
     }
     
-    @EventHandler
-    public void load(FMLInitializationEvent fEvent)
+    private void AddItems()
     {
-    	// Add Ore Chunks
     	// Iron
     	itemIron = new Item_Chunk(config.itemIron, "orechunks.iron", "ironchunk");
         GameRegistry.registerItem(itemIron, "chunkIron");
@@ -147,55 +102,51 @@ public class FortuneOres {
         itemSilver = new Item_Chunk(config.itemSilver, "orechunks.silver", "silverchunk");
         GameRegistry.registerItem(itemSilver, "chunkSilver");
         OreDictionary.registerOre("oreSilver", new ItemStack(itemSilver));
-        
-        // Set up our new Iron and Gold Items for smelting.
+    }
+    
+    private void AddSmelting()
+    {
+    	// Vanilla Smelting
         ItemStack stackIron = new ItemStack(Item.ingotIron, 1);
         ItemStack stackGold = new ItemStack(Item.ingotGold, 1);
         GameRegistry.addSmelting(itemIron.itemID, stackIron, 0);
         GameRegistry.addSmelting(itemGold.itemID, stackGold, 0);
         
-
-        // Blocks
-        // Iron
-        blockIron = new Block_Ore(config.blockIron, "iron_ore", "iron_ore", itemIron.itemID, config.countIron, 3.0F, 1, 3);
-        GameRegistry.registerBlock(blockIron, "oreIron");
-        MinecraftForge.setBlockHarvestLevel(blockIron, "pickaxe", 1);
-        OreDictionary.registerOre("oreIron", new ItemStack(blockIron));
-        
-        // Gold
-        blockGold = new Block_Ore(config.blockGold, "gold_ore", "gold_ore", itemGold.itemID, config.countGold, 3.0F, 2, 5);
-        GameRegistry.registerBlock(blockGold, "oreGold");
-        MinecraftForge.setBlockHarvestLevel(blockGold, "pickaxe", 2);
-        OreDictionary.registerOre("oreGold", new ItemStack(blockGold));
-        
+        // Mod Chunks
         // Copper
-        blockCopper = new Block_Ore(config.blockCopper, "copper_ore", "FortuneOres:copper_ore", itemCopper.itemID, config.countCopper, 3.0F, 1, 3);
-        GameRegistry.registerBlock(blockCopper, "oreCopper");
-        MinecraftForge.setBlockHarvestLevel(blockCopper, "pickaxe", 1);
-        OreDictionary.registerOre("oreCopper", new ItemStack(blockCopper));
+        ArrayList<ItemStack> copperIngots = OreDictionary.getOres("ingotCopper");
+        if(!copperIngots.isEmpty())
+        {
+        	// We have copper ingots registered.
+        	ItemStack stackCopper = copperIngots.get(0);
+        	GameRegistry.addSmelting(itemCopper.itemID, stackCopper, 0);
+        }
         
         // Tin
-        blockTin = new Block_Ore(config.blockTin, "tin_ore", "FortuneOres:tin_ore", itemTin.itemID, config.countTin, 3.0F, 1, 3);
-        GameRegistry.registerBlock(blockTin, "oreTin");
-        MinecraftForge.setBlockHarvestLevel(blockTin, "pickaxe", 1);
-        OreDictionary.registerOre("oreTin", new ItemStack(blockTin));
+        ArrayList<ItemStack> tinIngots = OreDictionary.getOres("ingotTin");
+        if(!tinIngots.isEmpty())
+        {
+        	// We have copper ingots registered.
+        	ItemStack stackTin = tinIngots.get(0);
+        	GameRegistry.addSmelting(itemTin.itemID, stackTin, 0);
+        }
         
         // Lead
-        blockLead = new Block_Ore(config.blockLead, "lead_ore", "FortuneOres:lead_ore", itemLead.itemID, config.countLead, 3.0F, 1, 3);
-        GameRegistry.registerBlock(blockLead, "oreLead");
-        MinecraftForge.setBlockHarvestLevel(blockLead, "pickaxe", 2);
-        OreDictionary.registerOre("oreLead", new ItemStack(blockLead));
+        ArrayList<ItemStack> leadIngots = OreDictionary.getOres("ingotLead");
+        if(!leadIngots.isEmpty())
+        {
+        	// We have copper ingots registered.
+        	ItemStack stackLead = leadIngots.get(0);
+        	GameRegistry.addSmelting(itemLead.itemID, stackLead, 0);
+        }
         
-        // Silver
-        blockSilver = new Block_Ore(config.blockSilver, "silver_ore", "FortuneOres:silver_ore", itemSilver.itemID, config.countSilver, 3.0F, 2, 5);
-        GameRegistry.registerBlock(blockSilver, "oreSilver");
-        MinecraftForge.setBlockHarvestLevel(blockSilver, "pickaxe", 2);
-        OreDictionary.registerOre("oreSilver", new ItemStack(blockSilver));
-    }
-    
-    private void ReplaceOre(int fBlockID, Block fNewBlock)
-    {
-    	Block.blocksList[fBlockID] = null;
-    	Block.blocksList[fBlockID] = fNewBlock;
+        // Lead
+        ArrayList<ItemStack> silverIngots = OreDictionary.getOres("ingotSilver");
+        if(!silverIngots.isEmpty())
+        {
+        	// We have copper ingots registered.
+        	ItemStack stackSilver = silverIngots.get(0);
+        	GameRegistry.addSmelting(itemSilver.itemID, stackSilver, 0);
+        }
     }
 }
