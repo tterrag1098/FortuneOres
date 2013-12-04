@@ -1,6 +1,5 @@
 package com.demoxin.minecraft.fortuneores;
 
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
 public class Item_Chunk extends Item
@@ -10,7 +9,7 @@ public class Item_Chunk extends Item
         super(fID);
         
         setMaxStackSize(64);
-        setCreativeTab(CreativeTabs.tabMaterials);
+        setCreativeTab(FortuneOres.oreChunks);
         setUnlocalizedName(fName);
         
         // Texture
