@@ -4,7 +4,7 @@ import net.minecraftforge.common.Configuration;
 
 public class Config
 {
-    private int defaultItemID = 1200;
+    private int defaultItemID = 11200;
     
     // Item Chunks 
     public final int itemIron;
